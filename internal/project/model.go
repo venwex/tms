@@ -1,0 +1,28 @@
+package project
+
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
+
+type Project struct {
+	ID          uuid.UUID
+	Name        string
+	Key         string
+	Description string
+
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time
+}
+
+type GetProjectsResponse struct {
+	ID          uuid.UUID `json:"id"`
+	Name        string    `json:"name"`
+	Key         string    `json:"key"`
+	Description string    `json:"description"`
+
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+}
