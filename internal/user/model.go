@@ -1,4 +1,4 @@
-package user
+package users
 
 import (
 	"time"
@@ -7,11 +7,11 @@ import (
 )
 
 type User struct {
-	ID        uuid.UUID
-	Email     string
-	Password  string
-	FirstName string
-	LastName  string
+	ID           uuid.UUID
+	Email        string
+	PasswordHash string
+	FirstName    string
+	LastName     string
 
 	IsActive bool
 

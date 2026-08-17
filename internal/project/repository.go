@@ -23,17 +23,17 @@ type Repository interface {
 	DeleteProject(ctx context.Context, id uuid.UUID) error
 }
 
-type projectRepository struct {
+type repository struct {
 	db *pgxpool.Pool
 }
 
 func NewRepository(db *pgxpool.Pool) Repository {
-	return &projectRepository{
+	return &repository{
 		db: db,
 	}
 }
 
-func (r *projectRepository) GetProjects(ctx context.Context) ([]Project, error) {
+func (r *repository) GetProjects(ctx context.Context) ([]Project, error) {
 	query := `SELECT id, name, key, description, created_at, updated_at, deleted_at 
     		  FROM project
     		  WHERE deleted_at IS NULL	
@@ -73,7 +73,7 @@ func (r *projectRepository) GetProjects(ctx context.Context) ([]Project, error) 
 	return projects, nil
 }
 
-func (r *projectRepository) GetProject(ctx context.Context, id uuid.UUID) (*Project, error) {
+func (r *repository) GetProject(ctx context.Context, id uuid.UUID) (*Project, error) {
 	query := `SELECT ID, Name, Description, created_at, updated_at, deleted_at
 			  FROM project
 			  WHERE ID = $1
@@ -100,7 +100,7 @@ func (r *projectRepository) GetProject(ctx context.Context, id uuid.UUID) (*Proj
 	return &project, nil
 }
 
-func (r *projectRepository) CreateProject(ctx context.Context, project *Project) error {
+func (r *repository) CreateProject(ctx context.Context, project *Project) error {
 	query := `INSERT INTO project (id, name, key, description) 
 			  VALUES ($1, $2, $3, $4)
 			  `
@@ -126,7 +126,7 @@ type UpdateProjectRequest struct {
 }
 */
 
-func (r *projectRepository) UpdateProject(ctx context.Context, project *Project) (*Project, error) {
+func (r *repository) UpdateProject(ctx context.Context, project *Project) (*Project, error) {
 	query := `
 		UPDATE project
 		SET name = $1,
@@ -163,7 +163,7 @@ func (r *projectRepository) UpdateProject(ctx context.Context, project *Project)
 	return project, nil
 }
 
-func (r *projectRepository) DeleteProject(ctx context.Context, id uuid.UUID) error {
+func (r *repository) DeleteProject(ctx context.Context, id uuid.UUID) error {
 	query := `
 		UPDATE project
 		SET deleted_at = NOW()

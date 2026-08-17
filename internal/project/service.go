@@ -6,16 +6,16 @@ type Service interface {
 	GetProjects(ctx context.Context) ([]Project, error)
 }
 
-type projectService struct {
+type service struct {
 	repository Repository
 }
 
 func NewService(repository Repository) Service {
-	return &projectService{
+	return &service{
 		repository: repository,
 	}
 }
 
-func (s *projectService) GetProjects(ctx context.Context) ([]Project, error) {
+func (s *service) GetProjects(ctx context.Context) ([]Project, error) {
 	return s.repository.GetProjects(ctx)
 }
