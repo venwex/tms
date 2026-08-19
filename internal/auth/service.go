@@ -11,7 +11,7 @@ import (
 
 type Service interface {
 	SignUp(ctx context.Context, req RegisterRequest) error
-	SignIn(ctx context.Context, req LoginRequest) error
+	SignIn(ctx context.Context, req LoginRequest) (*Tokens, error)
 }
 
 type service struct {
@@ -79,6 +79,18 @@ func (s *service) SignUp(ctx context.Context, req RegisterRequest) error {
 	return nil
 }
 
-func (s *service) SignIn(ctx context.Context, req LoginRequest) error {
-	return nil
+func (s *service) SignIn(ctx context.Context, req LoginRequest) (*Tokens, error) {
+	if strings.TrimSpace(req.Email) == "" {
+		return nil, ErrRequiredEmail
+	}
+
+	if strings.TrimSpace(req.Password) == "" {
+		return nil, ErrRequiredPassword
+	}
+
+	if len(req.Password) < 8 {
+		return nil, ErrInvalidPassword
+	}
+
+	return nil, nil
 }

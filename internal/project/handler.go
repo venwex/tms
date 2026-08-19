@@ -1,6 +1,9 @@
 package project
 
-import "net/http"
+import (
+	"log/slog"
+	"net/http"
+)
 
 //POST   /api/v1/projects
 //GET    /api/v1/projects
@@ -10,10 +13,14 @@ import "net/http"
 
 type Handler struct {
 	service Service
+	logger  *slog.Logger
 }
 
-func NewHandler(service Service) Handler {
-	return Handler{service: service}
+func NewHandler(svc Service, l *slog.Logger) Handler {
+	return Handler{
+		service: svc,
+		logger:  l,
+	}
 }
 
 func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
